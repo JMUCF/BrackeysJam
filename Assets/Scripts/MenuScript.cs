@@ -43,6 +43,10 @@ public class MenuScript : MonoBehaviour
     {
         OpenMainMenu();
     }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
     #endregion
     private void Update()
     {
