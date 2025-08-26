@@ -26,6 +26,7 @@ public class MenuScript : MonoBehaviour
     {
         GameCamOff();
         OpenMainMenu();
+        TVPlayer.Instance.ChangeVideo(0);
     }
     #region UI Buttons
     public void StartGame()
@@ -33,15 +34,18 @@ public class MenuScript : MonoBehaviour
         GameCamOn();
         CloseAllMenus();
         gameStarted = true;
+        TVPlayer.Instance.ChangeVideo(1);
     }
     public void ResumeGame()
     {
         GameCamOn();
         CloseAllMenus();
+        TVPlayer.Instance.ChangeVideo(1);
     }
     public void QuitToMain()
     {
         OpenMainMenu();
+        TVPlayer.Instance.ChangeVideo(0);
     }
     public void QuitGame()
     {
@@ -53,13 +57,15 @@ public class MenuScript : MonoBehaviour
         if (InputManager.Instance.MenuOpenCloseInput && gameStarted)
         {
             if (!isPaused) 
-            { 
+            {
+                TVPlayer.Instance.ChangeVideo(2);
                 Pause(); 
                 GameCamOff();
                 OpenPauseMenu();
             }
             else 
-            { 
+            {
+                TVPlayer.Instance.ChangeVideo(1);
                 UnPause();
                 GameCamOn();
                 CloseAllMenus();
@@ -70,7 +76,7 @@ public class MenuScript : MonoBehaviour
     private void Pause() 
     { 
         isPaused = true;
-        Time.timeScale = 0.0f;
+       // Time.timeScale = 0.0f;
 
     }
     private void UnPause() 
