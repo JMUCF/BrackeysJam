@@ -5,20 +5,51 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public PlayerController player;
+    private bool playerCaught;
+    public bool inEvent = false;
+    
+    private float suspicionLevel;
+    public TMP_Text suspicionText;
+    private int suspicionThreshold = 25;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Update()
     {
-        StartCoroutine("CheckIfPlayerVisible");
-    }
-
-    private IEnumerator CheckIfPlayerVisible()
-    {
-        while (true)
+        if(!inEvent)
         {
-            print(player.behindCover);
+            if (playerCaught == false && player.moving)
+            {
+                suspicionLevel += player.speed * Time.deltaTime;
+                suspicionText.text = Mathf.FloorToInt(suspicionLevel).ToString();
+            }
+            else if (!playerCaught)
+            {
+                suspicionLevel += 1 * Time.deltaTime;
+                suspicionText.text = Mathf.FloorToInt(suspicionLevel).ToString();
+            }
 
-            yield return new WaitForSeconds(Random.Range(3f, 7f));
+            if (suspicionLevel >= suspicionThreshold)
+            {
+                CheckIfPlayerVisible();
+                suspicionLevel = 0;
+            }
         }
     }
+
+    private void CheckIfPlayerVisible()
+    {
+        print(player.behindCover);
+        if(player.behindCover == false)
+        {
+            Caught();
+            return;
+        }
+        else
+            return;
+    }
+
+    private void Caught()
+    {
+        print("You got caught!");
+    }
+
 }
