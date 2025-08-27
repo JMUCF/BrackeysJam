@@ -15,12 +15,20 @@ public class MenuScript : MonoBehaviour
     [Header("First Selected Options")]
     [SerializeField] private GameObject mainMenuFirst, pauseMenuFirst;
 
+    [Header("Gameplay Systems")]
+    [SerializeField] private PlayerController playerController;
+    private GameManager gameManager;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
+        gameManager = GetComponent<GameManager>();
         GameStartUp();
         gameStarted = false;
+        playerController.enabled = false;
+        gameManager.enabled = false;
     }
     private void GameStartUp() 
     {
@@ -31,6 +39,8 @@ public class MenuScript : MonoBehaviour
     #region UI Buttons
     public void StartGame()
     {
+        gameManager.enabled = true;
+        playerController.enabled = true;
         GameCamOn();
         CloseAllMenus();
         gameStarted = true;
@@ -71,18 +81,21 @@ public class MenuScript : MonoBehaviour
                 CloseAllMenus();
             }
         }
+        
     }
     #region Pause Functions
     private void Pause() 
     { 
         isPaused = true;
-       // Time.timeScale = 0.0f;
+        gameManager.enabled = false;
+        playerController.enabled = false;
 
     }
     private void UnPause() 
     {
         isPaused = false;
-        Time.timeScale = 1.0f;
+        gameManager.enabled = true;
+        playerController.enabled = true;
     }
     #endregion
 
@@ -113,11 +126,17 @@ public class MenuScript : MonoBehaviour
     {
         gameCam.Priority = 0;
         menuCam.Priority = 20;
+        HandAnim.Instance.ArmAnim(true);
+        HandAnim.Instance.active = true;
     }
     private void GameCamOn()
     {
         gameCam.Priority = 20;
         menuCam.Priority = 0;
+        HandAnim.Instance.ArmAnim(false);
+        HandAnim.Instance.active = false;
+        gameManager.enabled = true;
+        playerController.enabled = true;
     }
     #endregion
 }

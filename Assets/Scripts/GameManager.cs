@@ -5,37 +5,46 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public PlayerController player;
+    public static GameManager Instance;
     private bool playerCaught;
     public bool inEvent = false;
     
     private float suspicionLevel;
-    public TMP_Text suspicionText;
+    //public TMP_Text suspicionText;
     private int suspicionThreshold = 25;
 
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
     void Update()
     {
+        Debug.Log(suspicionLevel);
         if(!inEvent)
         {
             if (playerCaught == false && player.moving)
             {
                 suspicionLevel += player.speed * Time.deltaTime;
-                suspicionText.text = Mathf.FloorToInt(suspicionLevel).ToString();
+                //suspicionText.text = Mathf.FloorToInt(suspicionLevel).ToString();
             }
             else if (!playerCaught)
             {
                 suspicionLevel += 1 * Time.deltaTime;
-                suspicionText.text = Mathf.FloorToInt(suspicionLevel).ToString();
+                //suspicionText.text = Mathf.FloorToInt(suspicionLevel).ToString();
             }
 
             if (suspicionLevel >= suspicionThreshold)
             {
-                CheckIfPlayerVisible();
+                HandAnim.Instance.Check();
                 suspicionLevel = 0;
             }
         }
     }
 
-    private void CheckIfPlayerVisible()
+    public void CheckIfPlayerVisible()
     {
         print(player.behindCover);
         if(player.behindCover == false)
@@ -44,12 +53,14 @@ public class GameManager : MonoBehaviour
             return;
         }
         else
-            return;
+            HandAnim.Instance.ResetState();
+        return;
     }
 
     private void Caught()
     {
         print("You got caught!");
+        HandAnim.Instance.PlayerCaught();
     }
 
 }
