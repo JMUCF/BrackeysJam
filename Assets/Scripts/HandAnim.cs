@@ -31,7 +31,7 @@ public class HandAnim : MonoBehaviour
         if(_animator != null)
         {
             _animator.SetTrigger("Click");
-            SFXManager.Instance.PlayAudio(clip);
+            SFXManager.Instance.PlayAudio(clip, 1);
         }
     }
     public void ArmAnim(bool open)

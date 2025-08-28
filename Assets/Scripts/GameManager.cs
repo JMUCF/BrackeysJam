@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         if(player.behindCover == false)
         {
             Caught();
-            SFXManager.Instance.PlayAudio(deathSFX);
+            SFXManager.Instance.PlayAudio(deathSFX,.1f);
             return;
         }
         else
