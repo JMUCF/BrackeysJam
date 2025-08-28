@@ -6,8 +6,8 @@ public class HandAnim : MonoBehaviour
 {
     public static HandAnim Instance;
     private Animator _animator;
-    private AudioSource audioSource;
     public bool active;
+    [SerializeField] private AudioClip clip;
     // Update is called once per frame
     void Awake()
     {
@@ -16,7 +16,6 @@ public class HandAnim : MonoBehaviour
             Instance = this;
         }
         _animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
         active = true;
     }
     
@@ -32,7 +31,7 @@ public class HandAnim : MonoBehaviour
         if(_animator != null)
         {
             _animator.SetTrigger("Click");
-            audioSource.Play();
+            SFXManager.Instance.PlayAudio(clip);
         }
     }
     public void ArmAnim(bool open)
