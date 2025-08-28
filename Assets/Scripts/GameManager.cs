@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private bool playerCaught;
     public bool inEvent = false;
     private int currentLevel;
+    [SerializeField] private AudioClip deathSFX;
     
     private float suspicionLevel;
     //public TMP_Text suspicionText;
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
         if(player.behindCover == false)
         {
             Caught();
+            SFXManager.Instance.PlayAudio(deathSFX);
             return;
         }
         else
