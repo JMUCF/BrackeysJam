@@ -30,7 +30,7 @@ public class KnockableObject : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && player.speed >= 6)
         {
             Debug.Log("Player Collided!");
             arrowUI.enabled = true;
@@ -90,7 +90,7 @@ public class KnockableObject : MonoBehaviour
                     if (index >= sequence.Count)
                     {
                         Debug.Log("Sequence complete! Event cleared.");
-                        EndEvent();
+                        EventWin();
                     }
                     else
                         UpdateArrowUI();
@@ -98,7 +98,7 @@ public class KnockableObject : MonoBehaviour
                 else
                 {
                     Debug.Log("Wrong input! Event failed.");
-                    EndEvent();
+                    EventLose();
                 }
             }
         }
@@ -115,6 +115,17 @@ public class KnockableObject : MonoBehaviour
     {
         string expected = sequence[index];
         arrowUI.sprite = expected == "Left" ? leftSprite : rightSprite;
+    }
+
+    private void EventWin()
+    {
+        EndEvent();
+    }
+
+    private void EventLose()
+    {
+
+        EndEvent();
     }
 
     private void EndEvent()

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private MenuScript MenuScript;
     private bool playerCaught;
     public bool inEvent = false;
+    private int currentLevel;
     
     private float suspicionLevel;
     //public TMP_Text suspicionText;
@@ -21,10 +22,10 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
         MenuScript = GetComponent<MenuScript>();
+        currentLevel = 1;
     }
     void Update()
     {
-        Debug.Log(suspicionLevel);
         if(!inEvent)
         {
             if (playerCaught == false && player.moving)
@@ -64,6 +65,12 @@ public class GameManager : MonoBehaviour
         print("You got caught!");
         HandAnim.Instance.PlayerCaught();
         MenuScript.GameEndCam();
+    }
+
+    public void Won()
+    {
+        currentLevel++;
+        print("You got the biscuit!");
     }
 
 }
