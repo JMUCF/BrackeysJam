@@ -1,19 +1,20 @@
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
     [Header("Menu Objects")]
-    [SerializeField] private GameObject  MainMenu, PauseMenu; 
+    [SerializeField] private GameObject  MainMenu, PauseMenu, CreditsMenu; 
 
     private bool isPaused,gameStarted;
 
     [Header("Cameras")]
-    public CinemachineCamera gameCam,menuCam;
+    public CinemachineCamera gameCam,menuCam,endCam;
 
     [Header("First Selected Options")]
-    [SerializeField] private GameObject mainMenuFirst, pauseMenuFirst;
+    [SerializeField] private GameObject mainMenuFirst, pauseMenuFirst, creditMenuFirst;
 
     [Header("Gameplay Systems")]
     [SerializeField] private PlayerController playerController;
@@ -61,6 +62,11 @@ public class MenuScript : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void Credits()
+    {
+        OpenCreditsMenu();
+    }
     #endregion
     private void Update()
     {
@@ -104,6 +110,7 @@ public class MenuScript : MonoBehaviour
     {
         MainMenu.SetActive(true);
         PauseMenu.SetActive(false);
+        CreditsMenu.SetActive(false);
         gameStarted = false;
         EventSystem.current.SetSelectedGameObject(mainMenuFirst);
     }
@@ -117,7 +124,16 @@ public class MenuScript : MonoBehaviour
     {
         MainMenu.SetActive(false);
         PauseMenu.SetActive(false);
+        CreditsMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    private void OpenCreditsMenu()
+    {
+        MainMenu.SetActive(false);
+        PauseMenu.SetActive(false);
+        CreditsMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(creditMenuFirst);
     }
     #endregion
 
@@ -137,6 +153,22 @@ public class MenuScript : MonoBehaviour
         HandAnim.Instance.active = false;
         gameManager.enabled = true;
         playerController.enabled = true;
+    }
+    public void GameEndCam()
+    {
+        gameCam.Priority = 0;
+        menuCam.Priority = 0;
+        endCam.Priority = 20;
+        Invoke("GameEndCamReset", 3);
+    }
+    private void GameEndCamReset()
+    {
+        endCam.Priority = 0;
+        GameStartUp();
+        gameStarted = false;
+        playerController.enabled = false;
+        gameManager.enabled = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     #endregion
 }

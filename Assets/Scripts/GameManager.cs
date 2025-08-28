@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController player;
     public static GameManager Instance;
+    private MenuScript MenuScript;
     private bool playerCaught;
     public bool inEvent = false;
     
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+        MenuScript = GetComponent<MenuScript>();
     }
     void Update()
     {
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
     {
         print("You got caught!");
         HandAnim.Instance.PlayerCaught();
+        MenuScript.GameEndCam();
     }
 
 }
